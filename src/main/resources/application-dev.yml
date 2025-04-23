@@ -1,0 +1,22 @@
+spring:
+  application:
+    name: BrbITBlog
+
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+      ddl-auto: update
+    show-sql: true
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/BRBITBLOG
+    username: brbitblog_user
+    password: root
+    driver-class-name: org.postgresql.Driver
+
+server:
+  port: 8080
