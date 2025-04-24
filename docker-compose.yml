@@ -1,0 +1,71 @@
+
+
+services:
+  redis:
+    image: 'bitnami/redis:latest'
+
+    container_name: redis_itblog
+    environment:
+      - ALLOW_EMPTY_PASSWORD=yes
+      - REDIS_DISABLE_COMMANDS=FLUSHDB,FLUSHALL
+    ports:
+      - '6380:6379'
+    volumes:
+      - 'redis_data:/bitnami/redis/data'
+    networks:
+      - elk-network
+
+  elasticsearch:
+    image: elasticsearch:8.17.1
+    container_name: elasticsearch_itblog
+    restart: always
+    volumes:
+      - elastic_data:/usr/share/elasticsearch/data/
+    environment:
+      - xpack.security.enabled=false  # Disable security for local development
+      - ES_JAVA_OPTS=-Xmx256m -Xms256m
+      - discovery.type=single-node
+    ports:
+      - '9201:9200'
+    networks:
+      - elk-network
+
+  logstash:
+    image: logstash:8.17.1
+    container_name: logstash_itblog
+    restart: always
+    volumes:
+      - ./logstash/:/logstash_dir
+    command: logstash -f /logstash_dir/pipeline/logstash.conf
+    depends_on:
+      - elasticsearch
+    ports:
+      - '5045:5044'
+    environment:
+      - LS_JAVA_OPTS=-Xmx256m -Xms256m
+    networks:
+      - elk-network
+
+  kibana:
+    image: kibana:8.17.1
+    container_name: kibana_itblog
+    restart: always
+    ports:
+      - '5602:5601'
+    environment:
+      - ELASTICSEARCH_URL=http://elasticsearch:9200
+    depends_on:
+      - elasticsearch
+    networks:
+      - elk-network
+
+networks:
+  elk-network:
+    driver: bridge
+
+volumes:
+  elastic_data:
+    driver: local
+  redis_data:  # <-- Redis uchun hajmni qo‘shdik
+    driver: local
+
