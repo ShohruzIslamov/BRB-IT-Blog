@@ -1,4 +1,4 @@
-package brb.itlog.uz.model.entity;
+package brb.itlog.uz.model.entity.post;
 
 import brb.itlog.uz.model.entity.base.BaseEntity;
 import jakarta.persistence.*;
@@ -14,7 +14,7 @@ import java.util.List;
 @ToString
 @Entity
 @Table(name = "posts")
-public class Post extends BaseEntity {
+public class Posts extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "postsIdGenerator")
@@ -44,12 +44,12 @@ public class Post extends BaseEntity {
             name = "post_tags",
             joinColumns = @JoinColumn(name = "post_id"),
             inverseJoinColumns = @JoinColumn(name = "tag_id"))
-    private List<Tag> tags;
+    private List<Tags> tags;
 
     @ManyToMany(cascade = CascadeType.PERSIST)
     @JoinTable(
             name = "post_authors",
             joinColumns = @JoinColumn(name = "post_id"),
             inverseJoinColumns = @JoinColumn(name = "author_id"))
-    private List<Author> authors;
+    private List<Authors> authors;
 }

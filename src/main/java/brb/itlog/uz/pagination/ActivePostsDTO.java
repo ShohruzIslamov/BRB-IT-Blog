@@ -1,9 +1,7 @@
-package brb.itlog.uz.model.pagination;
+package brb.itlog.uz.pagination;
 
 import brb.itlog.uz.model.dto.post.request.AuthorDTO;
 import brb.itlog.uz.model.dto.post.request.TagDTO;
-import brb.itlog.uz.model.entity.Author;
-import brb.itlog.uz.model.entity.Tag;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

@@ -5,7 +5,7 @@ import brb.itlog.uz.exception.AppResponseError;
 import brb.itlog.uz.model.Empty;
 import brb.itlog.uz.model.dto.post.request.CreatePostRequestDTO;
 import brb.itlog.uz.model.dto.post.request.PostDTO;
-import brb.itlog.uz.model.pagination.MetaDTO;
+import brb.itlog.uz.pagination.MetaDTO;
 import brb.itlog.uz.service.PostService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;

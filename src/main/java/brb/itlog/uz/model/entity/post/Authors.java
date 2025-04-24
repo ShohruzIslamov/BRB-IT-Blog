@@ -1,4 +1,4 @@
-package brb.itlog.uz.model.entity;
+package brb.itlog.uz.model.entity.post;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -12,7 +12,7 @@ import java.util.List;
 @ToString
 @Entity
 @Table(name = "authors")
-public class Author {
+public class Authors {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "authorIdGenerator")
@@ -26,5 +26,5 @@ public class Author {
     private String email;
 
     @ManyToMany(mappedBy = "authors")
-    private List<Post> posts;
+    private List<Posts> posts;
 }
