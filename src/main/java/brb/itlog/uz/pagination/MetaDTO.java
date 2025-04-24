@@ -1,4 +1,4 @@
-package brb.itlog.uz.model.pagination;
+package brb.itlog.uz.pagination;
 
 import lombok.*;
 

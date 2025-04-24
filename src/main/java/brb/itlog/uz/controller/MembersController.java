@@ -3,9 +3,11 @@ package brb.itlog.uz.controller;
 import brb.itlog.uz.exception.AppResponse;
 import brb.itlog.uz.exception.AppResponseError;
 import brb.itlog.uz.model.Empty;
-import brb.itlog.uz.model.dto.newsletter.CreateNewsLetterRequestDTO;
+import brb.itlog.uz.model.dto.members.request.CreateMembersRequestDTO;
+import brb.itlog.uz.model.dto.members.request.UpdateMembersRequestDTO;
+import brb.itlog.uz.model.dto.members.response.CreateMembersResponseDTO;
 import brb.itlog.uz.model.dto.newsletter.UpdateNewsLetterRequestDTO;
-import brb.itlog.uz.service.NewsLetterService;
+import brb.itlog.uz.service.MembersService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -18,33 +20,33 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@Tag(name = "BRB IT BLOG", description = "BRB IT BLOG NewsLetterController methods")
-@RequestMapping("/newsletter")
-public class NewsLetterController {
+@Tag(name = "BRB IT BLOG", description = "BRB IT BLOG MembersController methods")
+@RequestMapping("/members")
+public class MembersController {
 
-    private final NewsLetterService newsLetterService;
+    private final MembersService membersService;
 
-    @Operation(summary = "Create Newsletter method for BRB IT BLOG")
+    @Operation(summary = "Create Members method for BRB IT BLOG")
     @ApiResponse(responseCode = "200", description = "Successfully !")
     @ApiResponse(responseCode = "500", description = "Internal Server Error !",
             content = @Content(schema = @Schema(implementation = AppResponseError.class)))
     @PostMapping("/admin/create")
-    public ResponseEntity<AppResponse<String, Empty>> createNewsLetter(@Valid @RequestBody CreateNewsLetterRequestDTO request) {
+    public ResponseEntity<AppResponse<CreateMembersResponseDTO, Empty>> createNewsLetter(@Valid @RequestBody CreateMembersRequestDTO request) {
 
-        String response = newsLetterService.createNewsLetter(request);
+        CreateMembersResponseDTO response = membersService.createMember(request);
 
         return ResponseEntity.ok(new AppResponse<>(true, response, null));
     }
 
-    @Operation(summary = "Update Newsletter method for BRB IT BLOG")
+    @Operation(summary = "Update Members method for BRB IT BLOG")
     @ApiResponse(responseCode = "200", description = "Successfully !")
     @ApiResponse(responseCode = "500", description = "Internal Server Error !",
             content = @Content(schema = @Schema(implementation = AppResponseError.class)))
-    @PutMapping("/admin/update/{newsletterId}")
-    public ResponseEntity<AppResponse<String, Empty>> updateNewsletter(@PathVariable Long newsletterId,
-                                                                       @Valid @RequestBody UpdateNewsLetterRequestDTO request) {
+    @PutMapping("/admin/update/{memberId}")
+    public ResponseEntity<AppResponse<String, Empty>> updateMembers(@PathVariable Long memberId,
+                                                                       @Valid @RequestBody UpdateMembersRequestDTO request) {
 
-        String response = newsLetterService.updateNewsLetter(newsletterId, request);
+        String response = membersService.updateMember(memberId, request);
 
         return ResponseEntity.ok(new AppResponse<>(true, response, null));
     }

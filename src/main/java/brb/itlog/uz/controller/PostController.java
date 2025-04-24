@@ -29,7 +29,7 @@ public class PostController {
     @ApiResponse(responseCode = "200", description = "Successfully !")
     @ApiResponse(responseCode = "500", description = "Internal Server Error !",
             content = @Content(schema = @Schema(implementation = AppResponseError.class)))
-    @PostMapping("/admin/create/posts")
+    @PostMapping("/admin/create")
     public ResponseEntity<AppResponse<String, Empty>> createPosts(@Valid @RequestBody CreatePostRequestDTO request) {
 
         String response = postService.createPost(request);
