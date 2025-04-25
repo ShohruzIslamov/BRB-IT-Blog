@@ -9,7 +9,7 @@ services:
       - ALLOW_EMPTY_PASSWORD=yes
       - REDIS_DISABLE_COMMANDS=FLUSHDB,FLUSHALL
     ports:
-      - '6380:6379'
+      - '6379:6379'
     volumes:
       - 'redis_data:/bitnami/redis/data'
     networks:
@@ -26,7 +26,7 @@ services:
       - ES_JAVA_OPTS=-Xmx256m -Xms256m
       - discovery.type=single-node
     ports:
-      - '9201:9200'
+      - '9200:9200'
     networks:
       - elk-network
 
@@ -40,7 +40,7 @@ services:
     depends_on:
       - elasticsearch
     ports:
-      - '5045:5044'
+      - '5044:5044'
     environment:
       - LS_JAVA_OPTS=-Xmx256m -Xms256m
     networks:
@@ -51,7 +51,7 @@ services:
     container_name: kibana_itblog
     restart: always
     ports:
-      - '5602:5601'
+      - '5601:5601'
     environment:
       - ELASTICSEARCH_URL=http://elasticsearch:9200
     depends_on:

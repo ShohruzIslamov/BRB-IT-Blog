@@ -12,7 +12,7 @@ import java.util.List;
 @ToString
 @Entity
 @Table(name = "tags")
-public class Tags {
+public class Tag {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "tagsIdGenerator")
@@ -26,9 +26,9 @@ public class Tags {
     private String description;
 
     @ManyToMany(mappedBy = "tags")
-    private List<Posts> posts;
+    private List<Post> posts;
 
-    public Tags(String name, String description) {
+    public Tag(String name, String description) {
         this.name = name;
         this.description = description;
 

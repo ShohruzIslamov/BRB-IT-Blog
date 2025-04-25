@@ -6,7 +6,6 @@ import brb.itlog.uz.model.Empty;
 import brb.itlog.uz.model.dto.members.request.CreateMembersRequestDTO;
 import brb.itlog.uz.model.dto.members.request.UpdateMembersRequestDTO;
 import brb.itlog.uz.model.dto.members.response.CreateMembersResponseDTO;
-import brb.itlog.uz.model.dto.newsletter.UpdateNewsLetterRequestDTO;
 import brb.itlog.uz.service.MembersService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;

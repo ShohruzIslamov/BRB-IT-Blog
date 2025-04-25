@@ -1,9 +1,11 @@
 package brb.itlog.uz.repository;
 
-import brb.itlog.uz.model.entity.member.Members;
+import brb.itlog.uz.model.entity.member.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-public interface MembersRepository extends JpaRepository<Members, Long> {
+@Repository
+public interface MembersRepository extends JpaRepository<Member, Long> {
 
 
 }

@@ -1,6 +1,6 @@
 package brb.itlog.uz.model.entity.subscription;
 
-import brb.itlog.uz.model.entity.member.Members;
+import brb.itlog.uz.model.entity.member.Member;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -11,7 +11,7 @@ import lombok.*;
 @ToString
 @Entity
 @Table(name = "subscriptions")
-public class Subscriptions {
+public class Subscription {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "subscriptionsIdGenerator")
@@ -20,5 +20,7 @@ public class Subscriptions {
 
     @ManyToOne
     @JoinColumn(name = "member_id")
-    private Members member;
+    private Member member;
+
+
 }

@@ -11,7 +11,7 @@ import lombok.*;
 @ToString
 @Entity
 @Table(name = "newsleters")
-public class Newsletters extends BaseEntity {
+public class Newsletter extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "newsletersIdGenerator")

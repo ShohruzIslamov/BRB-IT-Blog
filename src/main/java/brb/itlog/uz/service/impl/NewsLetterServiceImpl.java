@@ -3,7 +3,7 @@ package brb.itlog.uz.service.impl;
 import brb.itlog.uz.exception.AppBadException;
 import brb.itlog.uz.model.dto.newsletter.CreateNewsLetterRequestDTO;
 import brb.itlog.uz.model.dto.newsletter.UpdateNewsLetterRequestDTO;
-import brb.itlog.uz.model.entity.newsletter.Newsletters;
+import brb.itlog.uz.model.entity.newsletter.Newsletter;
 import brb.itlog.uz.model.mapper.NewsLetterMapper;
 import brb.itlog.uz.repository.NewsLetterRepository;
 import brb.itlog.uz.service.NewsLetterService;
@@ -24,9 +24,9 @@ public class NewsLetterServiceImpl implements NewsLetterService {
     @Override
     public String createNewsLetter(CreateNewsLetterRequestDTO request) {
 
-        List<Newsletters> newsletters = newsLetterMapper.toEntityCreate(request.getNewsletters());
+        List<Newsletter> newsletters = newsLetterMapper.toEntityCreate(request.getNewsletters());
 
-        for (Newsletters newsletter : newsletters) {
+        for (Newsletter newsletter : newsletters) {
             newsLetterRepository.save(newsletter);
         }
 
@@ -45,9 +45,9 @@ public class NewsLetterServiceImpl implements NewsLetterService {
                     return new AppBadException("NewsLetter not found with ID: " + id);
                 });
 
-        List<Newsletters> newsletters = newsLetterMapper.toEntityUpdate(request.getNewsletters());
+        List<Newsletter> newsletters = newsLetterMapper.toEntityUpdate(request.getNewsletters());
 
-        for (Newsletters newsletter : newsletters) {
+        for (Newsletter newsletter : newsletters) {
             newsLetterRepository.save(newsletter);
         }
 

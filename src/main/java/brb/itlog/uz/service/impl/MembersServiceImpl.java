@@ -4,8 +4,8 @@ import brb.itlog.uz.exception.AppBadException;
 import brb.itlog.uz.model.dto.members.request.CreateMembersRequestDTO;
 import brb.itlog.uz.model.dto.members.request.UpdateMembersRequestDTO;
 import brb.itlog.uz.model.dto.members.response.CreateMembersResponseDTO;
-import brb.itlog.uz.model.entity.label.Labels;
-import brb.itlog.uz.model.entity.member.Members;
+import brb.itlog.uz.model.entity.label.Label;
+import brb.itlog.uz.model.entity.member.Member;
 import brb.itlog.uz.model.mapper.MembersMapper;
 import brb.itlog.uz.repository.LabelsRepository;
 import brb.itlog.uz.repository.MembersRepository;
@@ -28,12 +28,12 @@ public class MembersServiceImpl implements MembersService {
 
     @Override
     public CreateMembersResponseDTO createMember(CreateMembersRequestDTO createMembersRequestDTO) {
-        List<Members> membersList = membersMapper.toEntity(createMembersRequestDTO.getMembers());
+        List<Member> memberList = membersMapper.toEntity(createMembersRequestDTO.getMembers());
 
-        for (Members member : membersList) {
-            List<Labels> attachedLabels = new ArrayList<>();
-            for (Labels label : member.getLabels()) {
-                Labels attachedLabel = labelsRepository.findByName(label.getName())
+        for (Member member : memberList) {
+            List<Label> attachedLabels = new ArrayList<>();
+            for (Label label : member.getLabels()) {
+                Label attachedLabel = labelsRepository.findByName(label.getName())
                         .orElseThrow(() -> new RuntimeException("Label not found: " + label.getName()));
                 attachedLabels.add(attachedLabel);
             }
@@ -41,11 +41,11 @@ public class MembersServiceImpl implements MembersService {
 
         }
 
-        for (Members member : membersList) {
+        for (Member member : memberList) {
             membersRepository.save(member);
         }
 
-        return membersMapper.toCreateResponseDto(membersList);
+        return membersMapper.toCreateResponseDto(memberList);
     }
 
     @Override
@@ -56,12 +56,12 @@ public class MembersServiceImpl implements MembersService {
                     return new AppBadException("Member not found");
                 });
 
-        List<Members> membersList = membersMapper.toEntity(updateMembersRequestDTO.getMembers());
+        List<Member> memberList = membersMapper.toEntity(updateMembersRequestDTO.getMembers());
 
-        for (Members member : membersList) {
-            List<Labels> attachedLabels = new ArrayList<>();
-            for (Labels label : member.getLabels()) {
-                Labels attachedLabel = labelsRepository.findByName(label.getName())
+        for (Member member : memberList) {
+            List<Label> attachedLabels = new ArrayList<>();
+            for (Label label : member.getLabels()) {
+                Label attachedLabel = labelsRepository.findByName(label.getName())
                         .orElseThrow(() -> new RuntimeException("Label not found: " + label.getName()));
                 attachedLabels.add(attachedLabel);
             }
@@ -69,7 +69,7 @@ public class MembersServiceImpl implements MembersService {
 
         }
 
-        for (Members member : membersList) {
+        for (Member member : memberList) {
             membersRepository.save(member);
         }
 

@@ -14,7 +14,7 @@ import java.util.List;
 @ToString
 @Entity
 @Table(name = "posts")
-public class Posts extends BaseEntity {
+public class Post extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "postsIdGenerator")
@@ -44,12 +44,12 @@ public class Posts extends BaseEntity {
             name = "post_tags",
             joinColumns = @JoinColumn(name = "post_id"),
             inverseJoinColumns = @JoinColumn(name = "tag_id"))
-    private List<Tags> tags;
+    private List<Tag> tags;
 
     @ManyToMany(cascade = CascadeType.PERSIST)
     @JoinTable(
             name = "post_authors",
             joinColumns = @JoinColumn(name = "post_id"),
             inverseJoinColumns = @JoinColumn(name = "author_id"))
-    private List<Authors> authors;
+    private List<Author> authors;
 }

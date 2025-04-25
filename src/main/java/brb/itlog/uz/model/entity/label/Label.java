@@ -10,7 +10,7 @@ import lombok.*;
 @ToString
 @Entity
 @Table(name = "labels")
-public class Labels {
+public class Label {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "labelsIdGenerator")

@@ -1,9 +1,9 @@
 package brb.itlog.uz.model.entity.member;
 
 import brb.itlog.uz.model.entity.base.BaseEntity;
-import brb.itlog.uz.model.entity.label.Labels;
-import brb.itlog.uz.model.entity.newsletter.Newsletters;
-import brb.itlog.uz.model.entity.subscription.Subscriptions;
+import brb.itlog.uz.model.entity.label.Label;
+import brb.itlog.uz.model.entity.newsletter.Newsletter;
+import brb.itlog.uz.model.entity.subscription.Subscription;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -17,7 +17,7 @@ import java.util.List;
 @ToString
 @Entity
 @Table(name = "members")
-public class Members extends BaseEntity {
+public class Member extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "membersIdGenerator")
@@ -64,7 +64,7 @@ public class Members extends BaseEntity {
             joinColumns = @JoinColumn(name = "member_id"),
             inverseJoinColumns = @JoinColumn(name = "label_id")
     )
-    private List<Labels> labels;
+    private List<Label> labels;
 
     // Many-to-Many with Newsletters
     @ManyToMany
@@ -73,10 +73,10 @@ public class Members extends BaseEntity {
             joinColumns = @JoinColumn(name = "member_id"),
             inverseJoinColumns = @JoinColumn(name = "newsletter_id")
     )
-    private List<Newsletters> newsletters;
+    private List<Newsletter> newsletters;
 
     // One-to-Many with Subscriptions
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Subscriptions> subscriptions;
+    private List<Subscription> subscriptions;
 
 }

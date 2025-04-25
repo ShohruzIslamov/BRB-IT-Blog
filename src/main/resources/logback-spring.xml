@@ -2,8 +2,7 @@
 <configuration>
     <include resource="org/springframework/boot/logging/logback/base.xml"/>
     <appender name="logstash" class="net.logstash.logback.appender.LogstashTcpSocketAppender">
-<!--        <destination>172.16.55.152:5001</destination>-->
-        <destination>127.0.0.1:5045</destination>
+        <destination>127.0.0.1:5044</destination>
         <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
             <providers>
                 <mdc/>
@@ -13,7 +12,7 @@
                 <pattern>
                     <pattern>
                         {
-                        "app": "spring-check-conviction"
+                        "app": "spring-brb-it-blog"
                         }
                     </pattern>
                 </pattern>

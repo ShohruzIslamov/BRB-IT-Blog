@@ -12,7 +12,7 @@ import java.util.List;
 @ToString
 @Entity
 @Table(name = "authors")
-public class Authors {
+public class Author {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "authorIdGenerator")
@@ -26,5 +26,5 @@ public class Authors {
     private String email;
 
     @ManyToMany(mappedBy = "authors")
-    private List<Posts> posts;
+    private List<Post> posts;
 }
