@@ -1,8 +1,10 @@
 package brb.itlog.uz.model.dto.post.request;
 
+import brb.itlog.uz.model.PostStatus;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 
@@ -18,12 +20,12 @@ public class PostDTO {
 
     @JsonProperty("title")
     @Schema(description = "title", example = "World")
-    @NotBlank(message = "title is required")
+    @NotNull(message = "title is required")
     @Size(max = 255)
     private String title;
 
     @JsonProperty("status")
-    @Schema(description = "status", example = "draft")
+    @Schema(description = "status", example = "DRAFT")
     private String status;
 
     @JsonProperty("lexical")

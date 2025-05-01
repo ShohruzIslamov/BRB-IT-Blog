@@ -1,5 +1,6 @@
 package brb.itlog.uz.model.entity.post;
 
+import brb.itlog.uz.model.PostStatus;
 import brb.itlog.uz.model.entity.base.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
@@ -30,8 +31,9 @@ public class Post extends BaseEntity {
     @Column(name = "html", columnDefinition = "TEXT")
     private String html;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "status")
-    private String status;
+    private PostStatus status;
 
     @Column(name = "slug", unique = true)
     private String slug;

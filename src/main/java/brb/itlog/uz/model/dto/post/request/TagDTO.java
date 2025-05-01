@@ -19,4 +19,5 @@ public class TagDTO {
     @JsonProperty("description")
     @Schema(description = "description", example = "example@gew.org")
     private String description;
+
 }

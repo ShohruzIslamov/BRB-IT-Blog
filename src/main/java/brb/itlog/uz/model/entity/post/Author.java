@@ -1,5 +1,6 @@
 package brb.itlog.uz.model.entity.post;
 
+import brb.itlog.uz.model.entity.base.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -12,7 +13,7 @@ import java.util.List;
 @ToString
 @Entity
 @Table(name = "authors")
-public class Author {
+public class Author extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "authorIdGenerator")

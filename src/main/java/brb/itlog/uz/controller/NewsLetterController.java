@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@Tag(name = "BRB IT BLOG", description = "BRB IT BLOG NewsLetterController methods")
+@Tag(name = "NEWSLETTER", description = "NEWSLETTER NewsLetterController methods")
 @RequestMapping("/newsletter")
 public class NewsLetterController {
 
@@ -29,7 +29,7 @@ public class NewsLetterController {
     @ApiResponse(responseCode = "500", description = "Internal Server Error !",
             content = @Content(schema = @Schema(implementation = AppResponseError.class)))
     @PostMapping("/admin/create")
-    public ResponseEntity<AppResponse<String, Empty>> createNewsLetter(@Valid @RequestBody CreateNewsLetterRequestDTO request) {
+    public ResponseEntity<AppResponse<String, Empty>> createNewsLetter(@RequestParam(defaultValue = "false") Boolean opt_in_existing, @Valid @RequestBody CreateNewsLetterRequestDTO request) {
 
         String response = newsLetterService.createNewsLetter(request);
 
@@ -48,4 +48,6 @@ public class NewsLetterController {
 
         return ResponseEntity.ok(new AppResponse<>(true, response, null));
     }
+
+    // Todo get all
 }

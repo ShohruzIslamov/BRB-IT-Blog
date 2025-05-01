@@ -1,5 +1,6 @@
 package brb.itlog.uz.service;
 
+import brb.itlog.uz.model.PostStatus;
 import brb.itlog.uz.model.dto.post.request.CreatePostRequestDTO;
 import brb.itlog.uz.model.dto.post.request.PostDTO;
 import brb.itlog.uz.pagination.MetaDTO;
@@ -12,9 +13,9 @@ public interface PostService {
 
     String updateTitle(Long postId, String newTitle);
 
-    String updatePostStatusPublished(Long id, String status);
+    String updatePostStatusPublished(Long id, PostStatus status);
 
-    String updatePostStatusScheduled(Long id, String status, String publishedAt);
+    String updatePostStatusScheduled(Long id, PostStatus status, String publishedAt);
 
     String deletePost(Long id);
 

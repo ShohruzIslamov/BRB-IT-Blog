@@ -24,7 +24,7 @@ import java.util.Map;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@Tag(name = "BRB IT BLOG", description = "BRB IT BLOG ImageUploadController methods")
+@Tag(name = "IMAGE UPLOAD", description = "IMAGE UPLOAD ImageUploadController methods")
 @RequestMapping("/images")
 public class ImageUploadController {
 

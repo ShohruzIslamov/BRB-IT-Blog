@@ -17,7 +17,7 @@ import java.util.List;
 public class MembersRequestDTO {
 
     @JsonProperty("email")
-    @Schema(description = "email", example = "draft")
+    @Schema(description = "email", example = "SDs@gnail.com")
     @NotBlank(message = "email is required")
     @Size(max = 255)
     private String email;

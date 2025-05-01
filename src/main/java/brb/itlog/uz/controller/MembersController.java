@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@Tag(name = "BRB IT BLOG", description = "BRB IT BLOG MembersController methods")
+@Tag(name = "MEMBERS", description = "MEMBERS MembersController methods")
 @RequestMapping("/members")
 public class MembersController {
 
@@ -30,7 +30,7 @@ public class MembersController {
     @ApiResponse(responseCode = "500", description = "Internal Server Error !",
             content = @Content(schema = @Schema(implementation = AppResponseError.class)))
     @PostMapping("/admin/create")
-    public ResponseEntity<AppResponse<CreateMembersResponseDTO, Empty>> createNewsLetter(@Valid @RequestBody CreateMembersRequestDTO request) {
+    public ResponseEntity<AppResponse<CreateMembersResponseDTO, Empty>> createMember(@Valid @RequestBody CreateMembersRequestDTO request) {
 
         CreateMembersResponseDTO response = membersService.createMember(request);
 
@@ -49,4 +49,5 @@ public class MembersController {
 
         return ResponseEntity.ok(new AppResponse<>(true, response, null));
     }
+
 }

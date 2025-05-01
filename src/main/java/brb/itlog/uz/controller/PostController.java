@@ -3,6 +3,7 @@ package brb.itlog.uz.controller;
 import brb.itlog.uz.exception.AppResponse;
 import brb.itlog.uz.exception.AppResponseError;
 import brb.itlog.uz.model.Empty;
+import brb.itlog.uz.model.PostStatus;
 import brb.itlog.uz.model.dto.post.request.CreatePostRequestDTO;
 import brb.itlog.uz.model.dto.post.request.PostDTO;
 import brb.itlog.uz.pagination.MetaDTO;
@@ -19,7 +20,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@Tag(name = "BRB IT BLOG", description = "BRB IT BLOG PostController methods")
+@Tag(name = "POST", description = "POST PostController methods")
 @RequestMapping("/post")
 public class PostController {
 
@@ -50,6 +51,7 @@ public class PostController {
         return ResponseEntity.ok(new AppResponse<>(true, response, null));
     }
 
+
     @Operation(summary = "Update Post Title method for BRB IT BLOG")
     @ApiResponse(responseCode = "200", description = "Successfully !")
     @ApiResponse(responseCode = "500", description = "Internal Server Error !",
@@ -63,14 +65,15 @@ public class PostController {
         return ResponseEntity.ok(new AppResponse<>(true, response, null));
     }
 
+
     @Operation(summary = "Update Post Status 'PUBLISHED' method for BRB IT BLOG")
     @ApiResponse(responseCode = "200", description = "Successfully !")
     @ApiResponse(responseCode = "500", description = "Internal Server Error !",
             content = @Content(schema = @Schema(implementation = AppResponseError.class)))
     @PutMapping("/admin/update/status/published/{postId}")
-    public ResponseEntity<AppResponse<String, Empty>> updatePostsStatusPublished(@PathVariable Long postId, String status) {
+    public ResponseEntity<AppResponse<String, Empty>> updatePostsStatusPublished(@PathVariable Long postId) {
 
-        String response = postService.updatePostStatusPublished(postId, status);
+        String response = postService.updatePostStatusPublished(postId, PostStatus.PUBLISHED);
 
         return ResponseEntity.ok(new AppResponse<>(true, response, null));
     }
@@ -80,9 +83,9 @@ public class PostController {
     @ApiResponse(responseCode = "500", description = "Internal Server Error !",
             content = @Content(schema = @Schema(implementation = AppResponseError.class)))
     @PutMapping("/admin/update/status/scheduled/{postId}")
-    public ResponseEntity<AppResponse<String, Empty>> updatePostsStatusScheduled(@PathVariable Long postId, String status, String publishedAt) {
+    public ResponseEntity<AppResponse<String, Empty>> updatePostsStatusScheduled(@PathVariable Long postId, String publishedAt) {
 
-        String response = postService.updatePostStatusScheduled(postId, status, publishedAt);
+        String response = postService.updatePostStatusScheduled(postId, PostStatus.SCHEDULED, publishedAt);
 
         return ResponseEntity.ok(new AppResponse<>(true, response, null));
     }

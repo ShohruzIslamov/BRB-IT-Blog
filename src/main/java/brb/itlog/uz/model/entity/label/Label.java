@@ -1,5 +1,6 @@
 package brb.itlog.uz.model.entity.label;
 
+import brb.itlog.uz.model.entity.base.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -10,7 +11,7 @@ import lombok.*;
 @ToString
 @Entity
 @Table(name = "labels")
-public class Label {
+public class Label extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "labelsIdGenerator")

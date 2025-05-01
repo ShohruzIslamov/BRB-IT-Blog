@@ -1,14 +1,15 @@
 package brb.itlog.uz.service.impl;
 
 import brb.itlog.uz.exception.AppBadException;
-import brb.itlog.uz.model.entity.post.Author;
-import brb.itlog.uz.model.entity.post.Post;
-import brb.itlog.uz.model.entity.post.Tag;
-import brb.itlog.uz.model.mapper.PostMapper;
+import brb.itlog.uz.model.PostStatus;
 import brb.itlog.uz.model.dto.post.request.AuthorDTO;
 import brb.itlog.uz.model.dto.post.request.CreatePostRequestDTO;
 import brb.itlog.uz.model.dto.post.request.PostDTO;
 import brb.itlog.uz.model.dto.post.request.TagDTO;
+import brb.itlog.uz.model.entity.post.Author;
+import brb.itlog.uz.model.entity.post.Post;
+import brb.itlog.uz.model.entity.post.Tag;
+import brb.itlog.uz.model.mapper.PostMapper;
 import brb.itlog.uz.pagination.ActivePostsDTO;
 import brb.itlog.uz.pagination.MetaDTO;
 import brb.itlog.uz.repository.AuthorRepository;
@@ -24,8 +25,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -38,53 +42,109 @@ public class PostServiceImpl implements PostService {
     private final AuthorRepository authorRepository;
     private final TagRepository tagRepository;
 
+//    @Override
+//    public String createPost(CreatePostRequestDTO request) {
+//
+//        List<Tag> tagToSave = new ArrayList<>();
+//        List<Author> authorToSave = new ArrayList<>();
+//
+//        for (PostDTO postDTO : request.getPosts()) {
+//
+//            for (TagDTO tagDTO : postDTO.getTagsDetailed()) {
+//                Tag tag = tagRepository.findByName(tagDTO.getName())
+//                        .orElse(new Tag(tagDTO.getName(), tagDTO.getDescription()));
+//                tagToSave.add(tag);
+//            }
+//
+//            for (AuthorDTO authorDTO : postDTO.getAuthorsDetailed()) {
+//                Author author = authorRepository.findById(Long.parseLong(authorDTO.getId()))
+//                        .orElseThrow(() -> new RuntimeException("Author not found: " + authorDTO.getId()));
+//                authorToSave.add(author);
+//            }
+//        }
+//
+//        tagRepository.saveAll(tagToSave);
+//        authorRepository.saveAll(authorToSave);
+//
+//        List<Post> postToSave = new ArrayList<>();
+//
+//        for (PostDTO postDTO : request.getPosts()) {
+//            Post post = new Post();
+//            post.setTitle(postDTO.getTitle());
+//            post.setStatus(postDTO.getStatus());
+//            post.setLexical(postDTO.getLexical());
+//            post.setHtml(postDTO.getHtml());
+//
+//            List<Tag> postTags = new ArrayList<>();
+//            for (TagDTO tagDTO : postDTO.getTagsDetailed()) {
+//                Tag tag = tagRepository.findByName(tagDTO.getName())
+//                        .orElseThrow(() -> new RuntimeException("Tag not found: " + tagDTO.getName()));
+//                postTags.add(tag);
+//            }
+//            post.setTags(postTags);
+//
+//            List<Author> postAuthors = new ArrayList<>();
+//            for (AuthorDTO authorDTO : postDTO.getAuthorsDetailed()) {
+//                Author author = authorRepository.findById(Long.parseLong(authorDTO.getId()))
+//                        .orElseThrow(() -> new RuntimeException("Author not found: " + authorDTO.getId()));
+//                postAuthors.add(author);
+//            }
+//            post.setAuthors(postAuthors);
+//
+//            postToSave.add(post);
+//        }
+//
+//        postRepository.saveAll(postToSave);
+//
+//        log.info("Post created");
+//
+//        return "Post created";
+//    }
+
     @Override
     public String createPost(CreatePostRequestDTO request) {
 
-        List<Tag> tagToSave = new ArrayList<>();
-        List<Author> authorToSave = new ArrayList<>();
+        Map<String, Tag> tagMap = new HashMap<>();
+        Map<Long, Author> authorMap = new HashMap<>();
 
         for (PostDTO postDTO : request.getPosts()) {
 
             for (TagDTO tagDTO : postDTO.getTagsDetailed()) {
-                Tag tag = tagRepository.findByName(tagDTO.getName())
-                        .orElse(new Tag(tagDTO.getName(), tagDTO.getDescription()));
-                tagToSave.add(tag);
+                tagMap.computeIfAbsent(tagDTO.getName(), name ->
+                        tagRepository.findByName(name)
+                                .orElse(new Tag(name, tagDTO.getDescription()))
+                );
             }
 
             for (AuthorDTO authorDTO : postDTO.getAuthorsDetailed()) {
-                Author author = authorRepository.findById(Long.parseLong(authorDTO.getId()))
-                        .orElseThrow(() -> new RuntimeException("Author not found: " + authorDTO.getId()));
-                authorToSave.add(author);
+                Long authorId = Long.parseLong(authorDTO.getId());
+                if (!authorMap.containsKey(authorId)) {
+                    Author author = authorRepository.findById(authorId)
+                            .orElseThrow(() -> new RuntimeException("Author not found: " + authorId));
+                    authorMap.put(authorId, author);
+                }
             }
         }
 
-        tagRepository.saveAll(tagToSave);
-        authorRepository.saveAll(authorToSave);
+        tagRepository.saveAll(tagMap.values());
 
         List<Post> postToSave = new ArrayList<>();
 
         for (PostDTO postDTO : request.getPosts()) {
             Post post = new Post();
             post.setTitle(postDTO.getTitle());
-            post.setStatus(postDTO.getStatus());
+            post.setStatus(PostStatus.valueOf(postDTO.getStatus()));
             post.setLexical(postDTO.getLexical());
             post.setHtml(postDTO.getHtml());
 
-            List<Tag> postTags = new ArrayList<>();
-            for (TagDTO tagDTO : postDTO.getTagsDetailed()) {
-                Tag tag = tagRepository.findByName(tagDTO.getName())
-                        .orElseThrow(() -> new RuntimeException("Tag not found: " + tagDTO.getName()));
-                postTags.add(tag);
-            }
+            List<Tag> postTags = postDTO.getTagsDetailed().stream()
+                    .map(tagDTO -> tagMap.get(tagDTO.getName()))
+                    .collect(Collectors.toList());
             post.setTags(postTags);
 
-            List<Author> postAuthors = new ArrayList<>();
-            for (AuthorDTO authorDTO : postDTO.getAuthorsDetailed()) {
-                Author author = authorRepository.findById(Long.parseLong(authorDTO.getId()))
-                        .orElseThrow(() -> new RuntimeException("Author not found: " + authorDTO.getId()));
-                postAuthors.add(author);
-            }
+            List<Author> postAuthors = postDTO.getAuthorsDetailed().stream()
+                    .map(authorDTO -> authorMap.get(Long.parseLong(authorDTO.getId())))
+                    .collect(Collectors.toList());
             post.setAuthors(postAuthors);
 
             postToSave.add(post);
@@ -97,7 +157,6 @@ public class PostServiceImpl implements PostService {
         return "Post created";
     }
 
-    @Override
     public PostDTO copyPost(Long postId) {
         Post originalPost = postRepository.findById(postId)
                 .orElseThrow(() -> new EntityNotFoundException("Post not found with id: " + postId));
@@ -105,7 +164,7 @@ public class PostServiceImpl implements PostService {
         Post copiedPost = new Post();
         copiedPost.setTitle(originalPost.getTitle() + " (Copy)");
         copiedPost.setSlug(generateUniqueSlug(originalPost.getSlug()));
-        copiedPost.setStatus("draft");
+        copiedPost.setStatus(originalPost.getStatus());
         copiedPost.setLexical(originalPost.getLexical());
         copiedPost.setHtml(originalPost.getHtml());
         copiedPost.setTags(originalPost.getTags());
@@ -127,7 +186,7 @@ public class PostServiceImpl implements PostService {
         PostDTO dto = new PostDTO();
         dto.setTitle(post.getTitle());
         dto.setSlug(post.getSlug());
-        dto.setStatus(post.getStatus());
+        dto.setStatus(String.valueOf(post.getStatus()));
         dto.setLexical(post.getLexical());
         dto.setHtml(post.getHtml());
 
@@ -171,32 +230,67 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public String updatePostStatusPublished(Long postId, String status) {
+    public String updatePostStatusPublished(Long postId, PostStatus status) {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> {
                     log.error("Post not found with ID: {}", postId);
                     return new AppBadException("Post not found with ID: " + postId);
                 });
-        post.setStatus(status);
+
+        post.setStatus(PostStatus.valueOf(String.valueOf(status)));
+        post.setPublishedAt(LocalDateTime.now());
         Post savedPost = postRepository.save(post);
         log.info("Post Status successfuly Updated with status : {}", savedPost.getStatus());
         return "Post Status updated with status : " + savedPost.getStatus();
     }
 
+//    @Override
+//    public String updatePostStatusScheduled(Long postId, PostStatus status, String publishedAt) {
+//
+//        Post post = postRepository.findById(postId)
+//                .orElseThrow(() -> {
+//                    log.error("Post not found with ID: {}", postId);
+//                    return new AppBadException("Post not found with ID: " + postId);
+//                });
+//
+//        post.setStatus(PostStatus.valueOf(String.valueOf(status)));
+//
+//        LocalDate localDate = LocalDate.parse(publishedAt);
+//        post.setPublishedAt(localDate.atStartOfDay());
+//
+//        Post savedPost = postRepository.save(post);
+//        log.info("Post Status Updated with status : {}", savedPost.getStatus());
+//
+//        return "Post Status Updated with status : " + savedPost.getStatus() + " and published_at : " + publishedAt;
+//    }
+
     @Override
-    public String updatePostStatusScheduled(Long postId, String status, String publishedAt) {
+    public String updatePostStatusScheduled(Long postId, PostStatus status, String publishedAt) {
+
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> {
                     log.error("Post not found with ID: {}", postId);
                     return new AppBadException("Post not found with ID: " + postId);
                 });
-        post.setStatus(status);
+
+        post.setStatus(PostStatus.valueOf(String.valueOf(status)));
+
         LocalDate localDate = LocalDate.parse(publishedAt);
+
+        LocalDate currentDate = LocalDate.now();
+        if (localDate.isBefore(currentDate) || localDate.isEqual(currentDate)) {
+            log.error("This published at {} is not before current date", publishedAt);
+            throw new AppBadException("The published date must be in the future.");
+        }
+
         post.setPublishedAt(localDate.atStartOfDay());
+
         Post savedPost = postRepository.save(post);
-        log.info("Post Status Scheduled Successfully Updated with status : {}", savedPost.getStatus());
-        return "Post Status Updated with status : " + savedPost.getStatus() + " and publishedAt : " + publishedAt;
+        log.info("Post Status Updated with status: {}", savedPost.getStatus());
+
+        return "Post Status Updated with status: " + savedPost.getStatus() + " and published_at: " + savedPost.getPublishedAt();
     }
+
 
     @Override
     public String deletePost(Long id) {
@@ -206,7 +300,7 @@ public class PostServiceImpl implements PostService {
                     return new AppBadException("Post not found with ID: " + id);
                 });
         postRepository.deleteById(id);
-        log.info("Post deleted successfully");
+        log.info("Post deleted successfully with id : {}", id);
         return "Post deleted successfully";
     }
 
